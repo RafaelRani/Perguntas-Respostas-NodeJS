@@ -1,0 +1,21 @@
+#subir {
+    text-decoration: none;
+    background: rgba(231, 9, 9, 0.267);
+    bottom: 70px;
+    right: 30px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    padding: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: fixed;
+    border: 0;
+    font-family: sans-serif;
+    opacity: .8;
+}
+
+#subir:hover {
+    opacity:1;
+}

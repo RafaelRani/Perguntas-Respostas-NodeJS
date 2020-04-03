@@ -1,0 +1,111 @@
+<%- include("../partials/header.ejs") %>
+<body>
+    <%- include("../partials/navbar.ejs") %>
+    <div class="container">
+        <hr>
+        <div class="row">
+            <div class="col-7"><strong><%= question.author %></strong></div>
+            <div class="col-5"><strong><%= question.date %></strong></div>
+        </div>
+        <h1 class="text-danger"><%= question.title %></h1>
+        <p><%- question.description %></p>
+        <div class="row">
+            <div class="col-7">
+                <a href="#responda" class="btn btn-danger">RESPONDER</span></a>
+            </div>
+            <div class="col-5">
+                <a class="btn btn-warning" href="/questions/edit/<%= question.id %>">Editar</a>
+                <form method="POST" action="/questions/delete" style="display: inline;" onsubmit="confirmDelquestion(event, this)">
+                    <input type="hidden" name="id" value="<%= question.id %>">
+                    <button class="btn btn-danger">Deletar</button>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <br>
+        <h3>Respostas</h3>
+        <hr>
+        <% answers.forEach(answer => { %>
+            <br>
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-7">
+                            <strong><%= answer.author %></strong>
+                        </div>
+                        <div class="col-5"><%= answer.date %></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <%- answer.body %>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-7"></div>
+                        <div class="col-5">
+                            <a class="btn btn-warning" href="/answers/edit/<%= question.id %>/<%= answer.id %>">Editar</a>
+                            <form method="POST" action="/answers/delete" style="display: inline;" onsubmit="confirmDelanswer(event, this)">
+                                <input type="hidden" name="answerId" value="<%= answer.id %>">
+                                <input type="hidden" name="questionId" value="<%= question.id %>">
+                                <button class="btn btn-danger">Deletar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+        <div class="row">
+            <div class="col col-12">
+                <a style="float: right;" href="/answers/page/<%= question.id %>/2">Next >></a>
+            </div>
+            <hr>
+        </div> 
+        <br>
+        <div class="jumbotron">
+            <form method="POST" action="/answers/new">
+                <h3 id="responda">Responda</h3>
+                <hr>
+                <br>
+                <label>Autor</label>
+                <input type="text" placeholder="Autor" class="form-control" name="author"><br>
+                <label>Resposta</label>
+                <textarea placeholder="Digite sua resposta" id="answer" class="form-control" name="body"></textarea><br>
+                <input type="hidden" name="question" value="<%= question.id %>">
+                <!--type="hidden" = campo oculto, serve para armazenar um valor e enviar junto com o formulário-->
+                <button type="submit" class="btn btn-danger">Responder</button>
+            </form>
+        </div>
+    </div>
+</body>
+<%- include("../partials/footer.ejs") %>
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        language:'pt_BR',
+        selector: "#answer",
+        plugins: [
+            'advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
+        ]
+    })
+</script>
+<script>
+    function confirmDelquestion(event, form){
+        event.preventDefault() //impede que o formulário seja submetido
+        console.log("O formulário não foi enviado!")
+        var decision = confirm("Deseja realmente deletar esta pergunta?")
+        if(decision){
+            form.submit()
+            console.log("Eu escolhi deletar")
+        }
+    }
+
+    function confirmDelanswer(event, form){
+        event.preventDefault() //impede que o formulário seja submetido
+        console.log("O formulário não foi enviado!")
+        var decision = confirm("Deseja realmente deletar esta resposta?")
+        if(decision){
+            form.submit()
+            console.log("Eu escolhi deletar")
+        }
+    }
+</script>

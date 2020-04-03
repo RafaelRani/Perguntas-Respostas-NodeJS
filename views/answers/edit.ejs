@@ -1,0 +1,57 @@
+<%- include("../partials/header.ejs") %>
+<body>
+    <%- include("../partials/navbar.ejs") %>
+    <div class="container">
+        <hr>
+        <h1 class="text-danger"><%= question.title %></h1>
+        <p><%- question.description %></p>
+        <a href="#responda"><span class="badge badge-pill badge-danger">RESPONDA</span></a>
+        <hr>
+        <br>
+        <h3>Perguntas</h3>
+        <hr>
+        <% answers.forEach(answer => { %>
+            <br>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-7">
+                            <strong><%= answer.author %></strong>
+                        </div>
+                        <div class="col-5"><%= answer.date %></div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <%- answer.body %>
+                </div>
+            </div>
+        <% }) %>
+        <br>
+        <div class="jumbotron">
+            <form method="POST" action="/answers/update">
+                <h3 id="responda">Editar Resposta</h3>
+                <hr>
+                <br>
+                <label>Autor</label>
+                <input type="text" placeholder="author" class="form-control" name="author" value="<%= answer.author %>"><br>
+                <label>Resposta</label>
+                <textarea placeholder="Digite sua answer" id="answer" class="form-control" name="body"><%- answer.body %></textarea><br>
+                <input type="hidden" name="question" value="<%= question.id %>">
+                <input type="hidden" name="id" value="<%= answer.id %>">
+                <!--type="hidden" = campo oculto, serve para armazenar um valor e enviar junto com o formulário-->
+                <button type="submit" class="btn btn-danger">Atualizar Resposta</button>
+            </form>
+        </div>
+    </div>
+</body>
+<%- include("../partials/footer.ejs") %>
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        language:'pt_BR',
+        selector: "#answer",
+        plugins: [
+            'advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
+        ]
+    })
+</script>

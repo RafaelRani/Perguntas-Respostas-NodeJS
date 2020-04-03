@@ -1,0 +1,40 @@
+<%- include("./partials/header.ejs") %>
+<body>
+    <%- include("./partials/navbar.ejs") %>
+    <div class="container">
+        <hr>
+        <h1>Perguntas</h1>
+        <hr>
+        <% var i = -1 %>
+        <% questions.forEach(question => { %>
+            <% i = i + 1 %>
+            <br>
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title"><a class="text-danger" href="/question/<%= question.id %>"><%= question.title %></a></h3>
+                    <div class="card-subtitle">
+                        <div class="row">
+                            <div class="col-7"><%= question.author %></div>
+                            <div class="col-5"><%= question.date %></div>
+                        </div>
+                    </div>    
+                </div>
+                <div class="card-footer">
+                    <a href="/question/<%= question.id %>">
+                        <!--exibir o id da question-->
+                        <button type="button" class="btn btn-danger" title="Responder">
+                            Respostas <span class="badge badge-light"><!--num de respostas--></span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        <% }) %>
+        <div class="row">
+            <div class="col col-12">
+                <a style="float: right;" href="/questions/page/2">Next >></a>
+            </div>
+            <hr>
+        </div>    
+    </div>
+    <br>
+<%- include("./partials/footer.ejs") %>
