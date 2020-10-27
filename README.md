@@ -27,5 +27,5 @@ Plataforma de Perguntas e Respostas desenvolvida com NodeJs (Framework: ExpressJ
   $ npm install
   
 5. Rode a aplicação com o comando:<br>
-  $ nodemon app.js
+  $ nodemon index.js
   
