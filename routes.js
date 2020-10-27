@@ -5,7 +5,7 @@ const answersController = require("./answers/answersController")
 
 const routes = express.Router()
 
-// Exibir página inicial com as questions listadas
+// Exibir página inicial com as perguntas listadas
 routes.get('/', questionsController.index)
 // Exibir página para adicionar perguntas
 routes.get('/questions/new', questionsController.new)

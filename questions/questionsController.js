@@ -5,13 +5,24 @@ const moment = require("moment")
 
 module.exports = {
     index(req, res){
-        Question.findAll({ //= select * ALL from questions;
-            raw: true,
-            order:[ // raw: true, para retornar os dados crus(raw)
+        var limit = 8 //número de perguntas exibidas por página
+        Question.findAndCountAll({ //= select * ALL from questions;
+            raw: true, // raw: true, para retornar os dados crus(raw)
+            order:[
             ['id','DESC']], //ordenar por id / ASC: Crescente / DESC = decrescente
             limit: 8 //retonar 8 perguntas
         }).then(questions => {
-            res.render("index", {questions: questions})
+            var next
+            if(questions.count > limit){
+                next = true //ainda não está na última página
+            }else{
+                next = false //já está na última página
+            }
+            var result = {
+                next: next,
+                questions: questions
+            }
+            res.render("index", {result: result})
         })
     },
 
@@ -38,20 +49,28 @@ module.exports = {
 
     display(req,res){ 
         var id = req.params.id
+        var limitAnswers = 8
         Question.findOne({ //busca um dado, através de uma condição
             where: {id: id}
             // que tenha o id igual a var 'id'
         }).then(question => {
             if(question != undefined){
-                Answer.findAll({ 
+                Answer.findAndCountAll({ 
                     where: {questionId: question.id}, //procurar por todas as respostas que tenham o id igual ao id da pergunta
                     order: [
                         ['id','DESC']], //ordenando por id em forma decrescente (DESC)
                     limit: 8
                 }).then(answers => {
+                    var next
+                    if(answers.count > limitAnswers){
+                        next = true //ainda não está na última página
+                    }else{
+                        next = false //já está na última página
+                    }
                     res.render("questions/question", {
                         question: question,
-                        answers: answers
+                        answers: answers,
+                        next
                     })
                 })
             }else{
@@ -135,9 +154,9 @@ module.exports = {
         }).then(questions =>{ //retorna todos os registros da tabela e a quantida de registros
             var next
             if(offset + limit >= questions.count){ //se o offset atual + qtd de perguntas por página > numero de pergutas: já não existe outra página a ser exibida
-                next = false //chegou na última página
+                next = false //já está na última página
             }else{
-                next = true //não chegou na última página
+                next = true //ainda não está na última página
             }
             var result = {
                 page: parseInt(page),

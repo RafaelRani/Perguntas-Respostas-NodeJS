@@ -6,7 +6,7 @@
         <h1>Perguntas</h1>
         <hr>
         <% var i = -1 %>
-        <% questions.forEach(question => { %>
+        <% result.questions.rows.forEach(question => { %>
             <% i = i + 1 %>
             <br>
             <div class="card">
@@ -31,7 +31,9 @@
         <% }) %>
         <div class="row">
             <div class="col col-12">
+            <% if(result.next){ %>
                 <a style="float: right;" href="/questions/page/2">Next >></a>
+            <% } %>
             </div>
             <hr>
         </div>    

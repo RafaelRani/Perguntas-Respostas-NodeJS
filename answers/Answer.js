@@ -17,12 +17,12 @@ const Answer = connection.define("answers", {
     }
 })
 
-Question.hasMany(Answer) //relacionamento 1 p muitos: Category tem vários Articles
-Answer.belongsTo(Question) //relacionamento 1 p 1: Resposta pertence a Pergunta
+Question.hasMany(Answer) //relacionamento 1 p muitos: Pergunta tem muitas Respostas
+Answer.belongsTo(Question) //relacionamento 1 p 1: Resposta pertence a uma Pergunta
 
 //conectar o model ao bd
 Answer.sync({force: false}).then(() => {
-        console.log("table answers created!")
-    })
+    console.log("table answers created!")
+})
 
 module.exports = Answer
